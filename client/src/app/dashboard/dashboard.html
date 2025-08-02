@@ -1,16 +1,21 @@
 <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
-  <div class="text-xl font-bold text-blue-700">My Dashboard</div>
+  <div class="text-xl font-bold text-blue-950">Fleet Safety Management</div>
   <ul class="flex space-x-6">
     <li>
-      <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+      <a [routerLink]="['/Dashboard/Home']" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
     </li>
     <li>
-      <a href="#" class="text-gray-700 hover:text-blue-600 font-medium"
+      <a [routerLink]="['/Dashboard/Driver-Managament']" class="text-gray-700 hover:text-blue-600 font-medium"
         >Plan Trips</a
       >
     </li>
+        <li>
+      <a [routerLink]="['/Dashboard/Rewards']" class="text-gray-700 hover:text-blue-600 font-medium"
+        >Rewards</a
+      >
+    </li>
     <li>
-      <a href="#" class="text-gray-700 hover:text-blue-600 font-medium"
+      <a [routerLink]="['/Dashboard/Profile']" class="text-gray-700 hover:text-blue-600 font-medium"
         >Profile</a
       >
     </li>
@@ -21,6 +26,16 @@
     </li>
   </ul>
 </nav>
-<div class="p-6">
-  <p>dashboard works!</p>
+<router-outlet />
+<button
+  class="fixed bottom-6 left-6 bg-gradient-to-br from-blue-950 to-black text-white rounded-full p-4 shadow-lg hover:scale-105 transition"
+  (click)="showChat = !showChat"
+  aria-label="Open Chatbot"
+>
+  <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 21l1.8-4A7.96 7.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+  </svg>
+</button>
+<div>
+    <app-chatbot [show]="showChat"></app-chatbot>
 </div>
