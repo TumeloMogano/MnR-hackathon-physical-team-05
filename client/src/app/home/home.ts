@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { mockFleetData } from '../models/model';
 import { CommonModule } from '@angular/common';
+import { Alerts } from "../alerts/alerts";
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, Alerts],
   templateUrl: './home.html',
   styleUrl: './home.css',
   standalone: true
