@@ -24,7 +24,7 @@ export const routes: Routes = [
         {path: 'Rewards', component: Rewards},
         {path: '**', component: NotFound},
         {path: '', redirectTo: '/Dashboard/Home', pathMatch: 'full'}
-    ]/*, canActivate: [AuthGuard]*/,
+    ], canActivate: [AuthGuard],
   },
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: '**', component: NotFound },

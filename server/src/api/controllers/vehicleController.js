@@ -81,6 +81,23 @@ class VehicleController {
         }
     }
 
+    async Schedule (req, res, next) {
+
+        try {
+            //get request body a.k.a payload
+            const Data = req.body;
+            const scheduleData = await vehicleService.addSchedule(Data);
+
+            res.status(201).json({
+                success: true,
+                message: 'Schedule added successfully.',
+                data: scheduleData
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }
 
 module.exports = new VehicleController();

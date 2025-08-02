@@ -9,5 +9,6 @@ router.get('/:id', vehicleController.getVehicleById);
 router.post('/', vehicleController.addVehicle);
 router.put('/', vehicleController.updateVehicle);
 router.delete('/:id', vehicleController.deleteVehicle);
+router.post('/schedule', vehicleController.Schedule);
 
 module.exports = router;

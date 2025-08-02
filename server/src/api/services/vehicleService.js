@@ -41,6 +41,25 @@ class VehicleService {
         
     }
 
+    async addSchedule(vehicleData) {
+        const query = {
+            text: `INSERT INTO "Schedule" (status, departure, arrival, risklevel)
+                    VALUES ($1, $2, $3, "Mid-level")
+                    RETURNING *`,
+            values: [
+                vehicleData.status,
+                vehicleData.departure,
+                vehicleData.arrival,
+                vehicleData.risklevel
+            ]
+        }
+        
+
+        const result = await data.query(query);
+        return result.rows[0];
+        
+    }
+
         async updateVehicle(id,make, model, registration, driver) {
 
         const query = {
