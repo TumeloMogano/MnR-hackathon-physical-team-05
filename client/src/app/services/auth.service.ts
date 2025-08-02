@@ -15,20 +15,16 @@ export class Auth {
   });
 
   LoginUser(email: string, password: string): Observable<any> {
-    return this.http.post(`${environment.API_URL}/auth/login`, {
-      'Content-Type': 'application/json',
-      Body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
+    const body = {
+    email: email,
+    password: password,
+  };
+
+  return this.http.post(`${environment.API_URL}/auth/login`, body);
   }
 
   SignUpUser(user: User): Observable<any> {
-    return this.http.post(`${environment.API_URL}/auth/signup`, {
-      'Content-Type': 'application/json',
-      Body: JSON.stringify(user),
-    });
+    return this.http.post(`${environment.API_URL}/auth/signup`, user);
   }
 
   getBearerToken() {

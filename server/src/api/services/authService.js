@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'wruyvcwubuo;ebtrnbijewoiuoicljehli';
 
 class AuthService {
-    async registerUser(email, password, name, address) {
+    async registerUser(email, password, name) {
         try {
             // Check if user already exists
             const existingUserQuery = {
@@ -25,8 +25,8 @@ class AuthService {
 
             // Insert new user
             const query = {
-                text: 'INSERT INTO "User" (email, password, name, address) VALUES ($1, $2, $3, $4) RETURNING id, email, name, address',
-                values: [email, hashedPassword, name, address]
+                text: 'INSERT INTO "User" (email, password, name) VALUES ($1, $2, $3) RETURNING id, email, name',
+                values: [email, hashedPassword, name]
             };
             const result = await data.query(query);
 

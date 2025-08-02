@@ -38,11 +38,11 @@ class userService {
     }
 
     
-    async putUserDetails(id,email,address,name) {
+    async putUserDetails(id,email,name) {
 
         const query = {
-            text: 'UPDATE "User" SET email = $2, address = $3, name = $4 WHERE id = $1 Returning *',
-            values: [id,email,address,name]
+            text: 'UPDATE "User" SET email = $2, name = $3 WHERE id = $1 Returning *',
+            values: [id,email,name]
         };
 
         try {

@@ -3,7 +3,7 @@ const authService = require('../services/authService');
 class AuthController {
     async signup(req, res, next) {
         try {
-            const { email, password, name, address } = req.body;
+            const { email, password, name } = req.body;
 
             if (!email || !password || !name) {
                 return res.status(400).json({
@@ -12,7 +12,7 @@ class AuthController {
                 });
             }
 
-            const newUser = await authService.registerUser(email, password, name, address);
+            const newUser = await authService.registerUser(email, password, name);
 
             if (newUser.error) {
                 return res.status(409).json({

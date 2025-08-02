@@ -18,29 +18,24 @@ export class Signup {
   SignupError = false;
 
   constructor(private auth: Auth, private router: Router, private _formBuilder: FormBuilder){
-    this.signupFormGroup = _formBuilder.group({
-      name: [Validators.required],
-      email: [Validators.required, Validators.email],
-      password: [
-        Validators.required,
-        Validators.pattern(
-          '/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$/'
-        ),
-      ]
-    })
+      this.signupFormGroup = this._formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+     password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]]
+  });
   }
 
   Signup(){
-    if(this.signupFormGroup.invalid){
-      this.SignupError = true;
-      return;
-    }
+    const formData = this.signupFormGroup.value;
 
-    this.auth.SignUpUser(this.user).subscribe({
+    console.log(formData);
+
+    this.auth.SignUpUser(formData).subscribe({
       next: res => {
         this.router.navigate(['/Login'])
       },
       error: err => {
+        this.SignupError = true;
         console.log(err)
       }
     })

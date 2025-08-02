@@ -27,27 +27,25 @@ export class Login {
     private router: Router
   ) {
     this.loginFormGroup = this._formBuilder.group({
-      email: [Validators.required, Validators.email],
-      password: [
-        Validators.required,
-        Validators.pattern(
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.pattern(
           '/^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,}$/'
         ),
-      ],
+      ]],
     });
   }
 
-  email = '';
-  password = '';
 
   Login() {
-    if (this.loginFormGroup.invalid) {
-      this.loginError = true;
-      return;
-    }
 
-    this.auth.LoginUser(this.email, this.password).subscribe({
+// Get values directly from the form group
+  const email = this.loginFormGroup.value.email;
+  const password = this.loginFormGroup.value.password;
+
+
+    this.auth.LoginUser(email, password).subscribe({
       next: (res) => {
+        this.loginError = false;
         localStorage.setItem('bearer', res.token);
 
         if (this.auth.isAuthenticatedUser()) {
@@ -55,6 +53,7 @@ export class Login {
         }
       },
       error: (err) => {
+        this.loginError = true;
         console.log();
       },
     });
