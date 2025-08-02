@@ -1,17 +1,16 @@
-// server.js (Express.js with Socket.IO)
 const express = require('express');
-const http = require('http');
+const cors = require('cors');
+
+// Initialize express app
+const app = express();
+app.use(express.json());
+app.use(cors());
 const io = require('socket.io')(http, {
     cors: {
         origins: ['http://localhost:4200']
     }
 });
-const cors = require('cors');
 
-const app = express();
-const server = http.createServer(app);
-
-app.use(cors());
 
 io.on('connection', (socket) => {
   console.log('Client connected');
@@ -25,7 +24,16 @@ io.on('connection', (socket) => {
     console.log('Client disconnected');
   });
 });
+// Import route handlers
+const userRouter = require('./src/api/routes/userRoutes.js');
+const authRouter = require('./src/api/routes/authRoutes.js');
 
-server.listen(3000, () => {
-  console.log('Server listening on port 3000');
+// Register routes
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/auth', authRouter);
+
+// Start server
+const PORT = process.env.PORT || 3500;
+app.listen(PORT, () => {
+    console.log(`Server is running on PORT ${PORT}`);
 });
