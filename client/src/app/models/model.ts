@@ -26,6 +26,15 @@ export interface FleetVehicle {
   fuelLevel: number;
 }
 
+export interface Vehicle {
+  id?: string;
+  make: string;
+  model: string;
+  registration: string;
+  driver: string;
+  status: string;
+}
+
 export const mockFleetData: FleetVehicle[] = [
   {
     id: "VH001",
