@@ -3,29 +3,43 @@ import { RouterOutlet } from '@angular/router';
 import { Websocketservice } from './services/websocketservice';
 import { io } from 'socket.io-client';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
-export class App implements OnDestroy{
+export class App implements OnDestroy, OnInit {
   private messageSubscription: Subscription;
-  messages: string[] = [];
   newMessage: string = '';
 
   constructor(private socketService: Websocketservice) {
     this.messageSubscription = this.socketService
       .on('message')
       .subscribe((data) => {
-        console.log(data.text)
+        console.log(data.text);
       });
+  }
+  ngOnInit(): void {
+    this.sendMessage();
   }
 
   sendMessage() {
-    this.socketService.emit('message', { text: "this.newMessage" });
-    this.newMessage = '';
+    this.socketService.on('message').subscribe((res) => {
+      this.newMessage = res;
+      this.showSimplePopup();
+    });
+  }
+
+  showPopup = false;
+
+  showSimplePopup() {
+    this.showPopup = true;
+    setTimeout(() => {
+      this.showPopup = false;
+    }, 5000);
   }
 
   ngOnDestroy() {
