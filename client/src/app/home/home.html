@@ -1,0 +1,166 @@
+<!-- Header -->
+<div class="p-5">
+  <div class="flex justify-between items-start flex-wrap mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-blue-950">Fleet Risk Monitoring</h1>
+      <p class="text-sm text-gray-600">
+        Real-time vehicle tracking and risk assessment
+      </p>
+    </div>
+    <div class="flex gap-2 content-center">
+      <div
+        class="flex items-center border rounded-xl shadow-blue-50 shadow-lg px-3 py-1 text-sm text-gray-600"
+      >
+        <svg class="w-4 h-4 mr-1" fill="red">
+          <circle cx="8" cy="8" r="6" stroke="red" />
+        </svg>
+        Risk Score:
+        <span class="ml-1 font-semibold">{{ fleetStats.avgRisk }}</span>
+      </div>
+      <button
+        class="bg-black text-white px-4 py-1.5 text-sm shadow-blue-50 shadow-lag rounded-xl flex items-center gap-1 shadow"
+      >
+        <svg class="w-4 h-4" fill="white">
+          <circle cx="8" cy="8" r="6" stroke="white" />
+        </svg>
+        Live View
+      </button>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div
+    class="bg-gradient-to-r from-red-200 to-red-300 outline outline-red-50 rounded-lg p-4 mb-6 space-y-3"
+  >
+    <div class="text-red-900 font-semibold flex items-center text-sm">
+      <svg class="w-4 h-4"><path fill="currentColor" d="..." /></svg>
+      Critical Risk Alerts
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+      <div class="border border-red-300 bg-white rounded-lg px-3 py-2">
+        <strong>{{ fleetStats.highRisk }} vehicle(s)</strong> with high risk
+        scores require immediate attention.
+      </div>
+      <div class="border border-red-200 bg-white rounded-lg px-3 py-2">
+        <strong>{{ weatherAlerts.length }} vehicle(s)</strong> experiencing
+        severe weather conditions.
+      </div>
+      <div class="border border-red-100 bg-white rounded-lg px-3 py-2">
+        <strong>{{ lowFuelVehicles.length }} vehicle(s)</strong> with low fuel
+        levels need refueling.
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+    <div
+      class="bg-white rounded-lg shadow-lg outline outline-gray-100 p-4 text-center"
+    >
+      <p class="text-sm text-gray-500">Total Vehicles</p>
+      <p class="text-2xl font-bold">{{ fleetStats.total }}</p>
+    </div>
+    <div
+      class="bg-white rounded-lg outline outline-gray-100 shadow-lg p-4 text-center"
+    >
+      <p class="text-sm text-gray-500">Active</p>
+      <p class="text-2xl font-bold text-blue-500">{{ fleetStats.active }}</p>
+    </div>
+    <div
+      class="bg-white rounded-lg shadow-lg outline outline-gray-100 p-4 text-center"
+    >
+      <p class="text-sm text-gray-500">In Depot</p>
+      <p class="text-2xl font-bold text-green-500">{{ fleetStats.depot }}</p>
+    </div>
+    <div
+      class="bg-white rounded-lg shadow-lg outline outline-gray-100 p-4 text-center"
+    >
+      <p class="text-sm text-gray-500">High Risk</p>
+      <p class="text-2xl font-bold text-red-500">{{ fleetStats.highRisk }}</p>
+    </div>
+  </div>
+
+  <!-- Vehicle List -->
+  <div
+    class="bg-white rounded-lg shadow-lg shadow-gray-300 px-6 py-4 space-y-4"
+  >
+    <h2 class="text-lg font-semibold text-gray-900">Fleet Vehicles</h2>
+    <p class="text-sm text-gray-500">
+      Real-time status and risk assessment for all vehicles
+    </p>
+
+    <div
+      *ngFor="let v of vehicles"
+      class="flex justify-between items-center bg-blue-50 outline outline-gray-100 rounded-lg p-4 shadow-lg"
+    >
+      <div>
+        <div class="flex items-center gap-2 font-medium text-gray-900">
+          <span class="text-sm">{{ v.id }} - {{ v.make }} {{ v.model }}</span>
+          <div
+            class="rounded-full w-2.5 h-2.5"
+            [ngClass]="getStatusColor(v.status)"
+          ></div>
+        </div>
+        <p class="text-sm text-gray-500">{{ v.driver }}</p>
+        <p class="text-xs text-gray-400">{{ v.location }}</p>
+      </div>
+      <div class="flex flex-col">
+        <div
+          class="text-xs px-2 py-0.5 rounded-full font-medium my-2"
+          [ngClass]="{
+              'bg-green-100 text-green-700': v.weatherRisk === 'low',
+              'bg-yellow-100 text-yellow-800': v.weatherRisk === 'moderate',
+              'bg-red-100 text-red-700': v.weatherRisk === 'high'
+            }"
+        >
+          Weather: {{ v.weatherRisk }}
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded overflow-hidden">
+          <div class="h-full bg-black" [style.width.%]="v.riskScore"></div>
+        </div>
+      </div>
+      <div class="text-sm">
+        Risk Score:
+        <span [ngClass]="getRiskColor(v.riskScore)" class="font-semibold"
+          >{{ v.riskScore }}</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Insights Section -->
+  <div class="bg-white rounded-lg shadow p-6 mt-6">
+    <h3 class="text-md font-semibold flex items-center gap-2 mb-4">
+      Management Insights & Recommendations
+    </h3>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-700">
+      <div>
+        <h4 class="text-green-600 font-semibold mb-2">
+          Safety Recommendations
+        </h4>
+        <ul class="space-y-1">
+          <li>• Schedule maintenance for VH003 and VH005</li>
+          <li>• Consider alternative routes for mountain passes</li>
+          <li>• Implement weather-based speed restrictions</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-blue-600 font-semibold mb-2">Operational Insights</h4>
+        <ul class="space-y-1">
+          <li>• 60% of fleet currently active</li>
+          <li>• Average risk score: {{ fleetStats.avgRisk }}/100</li>
+          <li>• 2 vehicles require immediate attention</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-orange-600 font-semibold mb-2">Cost Optimization</h4>
+        <ul class="space-y-1">
+          <li>• Fuel efficiency down 12% in harsh weather</li>
+          <li>• Preventive maintenance can reduce risks by 25%</li>
+          <li>• Route optimization potential: 15% time savings</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<app-alerts></app-alerts>
