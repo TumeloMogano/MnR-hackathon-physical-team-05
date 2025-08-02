@@ -1,0 +1,21 @@
+<div class="p-6">
+  <div class="grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-8">
+    <div
+      *ngFor="let reward of rewards; let i = index"
+      (click)="activeIndex = i"
+      class="transition-all duration-300 cursor-pointer w-80 h-64 rounded-3xl shadow-lg flex flex-col items-center justify-between p-4 border-4 bg-blue-800"
+      [ngClass]="{
+      'scale-105 shadow-2xl border-blue-400 ring-4 ring-blue-300 z-10': activeIndex === i,
+      'border-transparent opacity-80': activeIndex !== i
+    }"
+    >
+      <h3 class="text-2xl font-bold mb-2 text-white drop-shadow">
+        {{ reward.title }}
+      </h3>
+      <p class="text-3xl text-gray-50">{{reward.score}}</p>
+      <p class="text-lg text-white/90 text-center drop-shadow">
+        {{ reward.description }}
+      </p>
+    </div>
+  </div>
+</div>

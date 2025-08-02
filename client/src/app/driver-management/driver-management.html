@@ -1,0 +1,102 @@
+<div
+  class="bg-white rounded-b-lg shadow-lg shadow-gray-300 px-6 py-4 space-y-4"
+>
+  <h2 class="text-lg font-semibold text-gray-900">Manage Fleet Vehicles</h2>
+  <p class="text-sm text-gray-500">
+    Real-time status and risk assessment for all vehicles
+  </p>
+
+  <div
+    *ngFor="let v of vehicles; let i = index"
+    class="flex flex-col bg-blue-50 outline outline-gray-100 rounded-lg p-4 shadow-lg mb-2"
+  >
+    <div
+      class="flex justify-between items-center cursor-pointer"
+      (click)="expandedIndex = expandedIndex === i ? -1 : i"
+    >
+      <div>
+        <div class="flex items-center gap-2 font-medium text-gray-900">
+          <span class="text-sm">{{ v.id }} - {{ v.make }} {{ v.model }}</span>
+          <div
+            class="rounded-full w-2.5 h-2.5"
+            [ngClass]="getStatusColor(v.status)"
+          ></div>
+        </div>
+        <p class="text-sm text-gray-500">{{ v.driver }}</p>
+        <p class="text-xs text-gray-400">{{ v.location }}</p>
+      </div>
+      <div class="flex flex-col items-start">
+        <div
+          class="text-xs px-2 py-0.5 rounded-full font-medium my-2"
+          [ngClass]="{
+                'bg-green-100 text-green-700': v.weatherRisk === 'low',
+                'bg-yellow-100 text-yellow-800': v.weatherRisk === 'moderate',
+                'bg-red-100 text-red-700': v.weatherRisk === 'high'
+              }"
+        >
+          Weather: {{ v.weatherRisk }}
+        </div>
+        <div class="w-24 h-2 bg-gray-200 rounded overflow-hidden">
+          <div class="h-full bg-black" [style.width.%]="v.riskScore"></div>
+        </div>
+      </div>
+      <div class="text-sm ml-4">
+        Risk Score:
+        <span [ngClass]="getRiskColor(v.riskScore)" class="font-semibold"
+          >{{ v.riskScore }}</span
+        >
+      </div>
+      <div class="ml-4">
+        <button
+          class="bg-gradient-to-l from-blue-700 to-blue-500 rounded-3xl text-white text-sm hover:p-3.5 hover:opacity-75 p-2.5 shadow-lg shadow-gray-500"
+        >
+          Schedule Plan
+        </button>
+      </div>
+      <div class="ml-2">
+        <svg
+          [ngClass]="{'rotate-180': expandedIndex === i}"
+          class="w-5 h-5 text-gray-500 transition-transform duration-200"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      *ngIf="expandedIndex === i"
+      class="mt-4 outline outline-blue-50 shadow shadow-blue-100 p-4 text-sm text-gray-700 bg-white rounded"
+    >
+      <div class="grid grid-cols-2">
+        <div><strong>Total Mileage:</strong> {{ v.totalMiles | number}} km</div>
+        <div><strong>Current Speed:</strong> {{ v.currentSpeed }} km/h</div>
+        <div><strong>Speed Limit:</strong> {{ v.speedLimit }} km/h</div>
+        <div><strong>Incidents Reported:</strong> {{ v.incidents }}</div>
+      </div>
+      <div class="flex flex-row-reverse">
+        <button
+          class="bg-gradient-to-l from-green-700 to-green-500 rounded-4xl text-white text-xs hover:p-3.5 hover:opacity-75 p-2.5 shadow-lg shadow-gray-500"
+        >
+          Edit Vehicle
+        </button>
+        <button
+          class="bg-gradient-to-l from-red-700 to-red-500 rounded-4xl text-white text-xs hover:p-3 hover:opacity-75 p-2.5 shadow-lg shadow-gray-500 mx-2"
+        >
+          Remove Vehicle
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<button
+  class="fixed right-5 bottom-5 bg-gradient-to-l from-blue-700 to-blue-500 rounded-3xl text-white text-sm hover:p-3.5 hover:opacity-75 p-2.5 shadow-lg shadow-gray-500"
+>
+  Add Vehicle
+</button>
